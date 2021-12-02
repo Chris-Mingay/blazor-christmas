@@ -35,7 +35,7 @@ namespace CleanArchitecture.Api
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
-                    if (context.Database.IsSqlServer())
+                    if (!context.Database.IsInMemory())
                     {
                         await context.Database.MigrateAsync();
                     }
