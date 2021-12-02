@@ -28,9 +28,6 @@ namespace CleanArchitecture.Infrastructure
             }
             else
             {
-                Console.WriteLine("WOOP Using postgres");
-                int[] woop = new[] { 0 };
-                Console.WriteLine(woop[5]);
                 
                 //services.AddDbContext<ApplicationDbContext>(options =>
                 //    options.UseSqlServer(
