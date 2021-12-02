@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -31,13 +31,29 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     services:
-      sql:
-        image: mcr.microsoft.com/mssql/server
-        ports:
-          - 1433:1433
+      postgres:
+        # Docker Hub image
+        image: postgres:latest
+        # service environment variables
+        # `POSTGRES_HOST` is `postgres`
         env:
-          SA_PASSWORD: Your_password123
-          ACCEPT_EULA: Y
+          # optional (defaults to `postgres`)
+          POSTGRES_DB: CleanArchitectureDB
+          # required
+          POSTGRES_PASSWORD: Password1!
+          # optional (defaults to `5432`)
+          POSTGRES_PORT: 5432
+          # optional (defaults to `postgres`)
+          POSTGRES_USER: CleanArchitectureDB
+        ports:
+          # maps tcp port 5432 on service container to the host
+          - 5432:5432
+        # set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2
 
@@ -49,5 +65,5 @@ jobs:
       - name: run tests
         run: dotnet test CleanArchitecture.sln --configuration Release
         env:
-          ConnectionStrings__DefaultConnection: Server=.;Database=CleanArchitectureTestDb;User=sa;Password=Your_password123;MultipleActiveResultSets=true
+          ConnectionStrings__DefaultConnection_Postgres: User ID=CleanArchitectureDB;Password=Password1!;Server=localhost;Port=5433;Database=CleanArchitectureDB;Integrated Security=true;Pooling=true;
     
