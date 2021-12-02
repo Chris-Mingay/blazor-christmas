@@ -75,7 +75,11 @@ namespace CleanArchitecture.Application.IntegrationTests
 
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
-            context.Database.Migrate();
+            if (!context.Database.IsInMemory())
+            {
+                context.Database.Migrate();    
+            }
+            
         }
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
@@ -89,7 +93,7 @@ namespace CleanArchitecture.Application.IntegrationTests
 
         public static async Task<string> RunAsDefaultUserAsync()
         {
-            return await RunAsUserAsync("test@local", "Testing1234!", new string[] { });
+            return await RunAsUserAsync("test@test.com", "Testing1234!", new string[] { });
         }
 
         public static async Task<string> RunAsAdministratorAsync()
@@ -105,6 +109,14 @@ namespace CleanArchitecture.Application.IntegrationTests
 
             var user = new CleanArchitecture.Infrastructure.Identity.ApplicationUser { UserName = userName, Email = userName };
 
+
+            var existingUser = await userManager.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            if (existingUser is not null)
+            {
+                _currentUserId = existingUser.Id;
+                return _currentUserId;
+            }
+            
             var result = await userManager.CreateAsync(user, password);
 
             if (roles.Any())

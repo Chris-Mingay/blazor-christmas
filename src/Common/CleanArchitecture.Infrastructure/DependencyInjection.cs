@@ -24,9 +24,14 @@ namespace CleanArchitecture.Infrastructure
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseInMemoryDatabase("CleanArchitectureDb"));
+                Console.WriteLine("WOOP Using in memory");
             }
             else
             {
+                Console.WriteLine("WOOP Using postgres");
+                int[] woop = new[] { 0 };
+                Console.WriteLine(woop[5]);
+                
                 //services.AddDbContext<ApplicationDbContext>(options =>
                 //    options.UseSqlServer(
                 //        configuration.GetConnectionString("DefaultConnection"),
