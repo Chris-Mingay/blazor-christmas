@@ -28,11 +28,6 @@ namespace CleanArchitecture.Infrastructure
             else
             {
                 
-                //services.AddDbContext<ApplicationDbContext>(options =>
-                //    options.UseSqlServer(
-                //        configuration.GetConnectionString("DefaultConnection"),
-                //        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-                
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseNpgsql(
                         configuration.GetConnectionString("DefaultConnection_Postgres")));
