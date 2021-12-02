@@ -32,9 +32,12 @@ namespace CleanArchitecture.Infrastructure.Persistence
             _currentUserService = currentUserService;
         }
 
-        public DbSet<City> Cities { get; set; }
-        public DbSet<District> Districts { get; set; }
-        public DbSet<Village> Villages { get; set; }
+        public DbSet<Answer> Answers => Set<Answer>();
+        public DbSet<League> Leagues => Set<League>();
+        public DbSet<LeagueMembership> LeagueMemberships => Set<LeagueMembership>();
+        public DbSet<Question> Questions => Set<Question>();
+        public DbSet<QuestionOption> QuestionOptions => Set<QuestionOption>();
+        public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

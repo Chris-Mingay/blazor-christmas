@@ -1,9 +1,10 @@
 ﻿using System;
+using AutoMapper;
+using CleanArchitecture.Application.Common.Mappings;
 using CleanArchitecture.Application.Dto;
+using CleanArchitecture.Application.Questions.Dtos;
 using CleanArchitecture.Domain.Entities;
 using FluentAssertions;
-using Mapster;
-using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -11,26 +12,23 @@ namespace CleanArchitecture.Application.UnitTests.Common.Mappings
 {
     public class MappingTests
     {
+        private readonly IConfigurationProvider _configuration;
         private readonly IMapper _mapper;
 
         public MappingTests()
         {
-            TypeAdapterConfig typeAdapterConfig = new TypeAdapterConfig();
+            _configuration = new MapperConfiguration(config => 
+                config.AddProfile<MappingProfile>());
 
-            IServiceCollection services = new ServiceCollection();
-            services.AddSingleton(typeAdapterConfig);
-            services.AddScoped<IMapper, ServiceMapper>();
-
-            var sp = services.BuildServiceProvider();
-
-            using var scope = sp.CreateScope();
-            _mapper = scope.ServiceProvider.GetService<IMapper>();
+            _mapper = _configuration.CreateMapper();
         }
 
 
         [Test]
-        [TestCase(typeof(City), typeof(CityDto))]
-        [TestCase(typeof(District), typeof(DistrictDto))]
+        [TestCase(typeof(Question), typeof(QuestionDto))]
+        [TestCase(typeof(Question), typeof(QuestionPreviewDto))]
+        [TestCase(typeof(Answer), typeof(AnswerDto))]
+        [TestCase(typeof(QuestionOption), typeof(QuestionOptionDto))]
         public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
         {
             var instance = Activator.CreateInstance(source);
@@ -41,9 +39,9 @@ namespace CleanArchitecture.Application.UnitTests.Common.Mappings
         [Test]
         public void ShouldMappingCorrectly()
         {
-            var city = new City { Id = 1, Name = "Bursa" };
-            var cityDto = _mapper.Map<City, CityDto>(city);
-            cityDto.Name.Should().Be("Bursa");
+            var question = new Question() { Id = Guid.NewGuid(), Text = "ShouldMappingCorrectly", Category = "Category", DayNumber = 1};
+            var questionDto = _mapper.Map<Question, QuestionDto>(question);
+            questionDto.Text.Should().Be("ShouldMappingCorrectly");
         }
     }
 }

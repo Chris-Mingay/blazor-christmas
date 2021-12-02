@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Dto;
-using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,7 +39,32 @@ namespace CleanArchitecture.Infrastructure.Identity
 
             if (user != null && await _userManager.CheckPasswordAsync(user, password))
             {
-                return _mapper.Map<ApplicationUserDto>(user);
+                ApplicationUserDto applicationUserDto = new()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email
+                };
+                return applicationUserDto;
+
+            }
+
+            return null;
+        }
+
+        public async Task<ApplicationUserDto> GetUserFromUserId(string userId)
+        {
+            ApplicationUser user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user != null)
+            {
+                ApplicationUserDto applicationUserDto = new()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email
+                };
+                return applicationUserDto;
             }
 
             return null;

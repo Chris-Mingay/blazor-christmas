@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.Application.Dto
+﻿using CleanArchitecture.Application.Common.Mappings;
+
+namespace CleanArchitecture.Application.Dto
 {
     public class ApplicationUserDto
     {

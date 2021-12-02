@@ -7,11 +7,12 @@ namespace CleanArchitecture.Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {
-        DbSet<City> Cities { get; set; }
-
-        DbSet<District> Districts { get; set; }
-
-        DbSet<Village> Villages { get; set; }
+        DbSet<Answer> Answers { get; }
+        DbSet<League> Leagues { get; }
+        DbSet<LeagueMembership> LeagueMemberships { get; }
+        DbSet<Question> Questions { get; }
+        DbSet<QuestionOption> QuestionOptions { get; }
+        DbSet<UserProfile> UserProfiles { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

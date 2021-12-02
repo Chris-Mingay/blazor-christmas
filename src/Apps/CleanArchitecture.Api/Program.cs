@@ -44,7 +44,7 @@ namespace CleanArchitecture.Api
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                     await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                    await ApplicationDbContextSeed.SeedSampleCityDataAsync(context);
+                    await ApplicationDbContextSeed.SeedSampleDataAsync(context, userManager);
                 }
                 catch (Exception ex)
                 {
