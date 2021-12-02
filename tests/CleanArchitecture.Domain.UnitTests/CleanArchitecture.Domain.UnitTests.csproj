@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ValueObjects" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Common\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
   </ItemGroup>
 </Project>
