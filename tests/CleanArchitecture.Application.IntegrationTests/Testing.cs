@@ -145,7 +145,7 @@ namespace CleanArchitecture.Application.IntegrationTests
 
         public static async Task ResetState()
         {
-            await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+            await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection_Postgres"));
             _currentUserId = null;
         }
 

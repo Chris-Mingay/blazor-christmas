@@ -24,7 +24,6 @@ namespace CleanArchitecture.Infrastructure
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseInMemoryDatabase("CleanArchitectureDb"));
-                Console.WriteLine("WOOP Using in memory");
             }
             else
             {
