@@ -19,6 +19,11 @@ public class QuestionsController : BaseApiController
         return await Mediator.Send(new GetQuestionsQuery());
     }
 
+    /// <summary>
+    /// YAY IT WORKS
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("preview/{id}")]
     public async Task<ServiceResult<QuestionPreviewDto>> GetPreview(Guid id)
     {

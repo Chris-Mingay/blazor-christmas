@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 #ENV ASPNETCORE_URLS=https://+:5006;http://+:5005
 WORKDIR /app
 EXPOSE 80
-EXPOSE 433
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
