@@ -64,7 +64,7 @@ namespace CleanArchitecture.Api
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -123,6 +123,14 @@ namespace CleanArchitecture.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
 
             app.UseHealthChecks("/health");
 

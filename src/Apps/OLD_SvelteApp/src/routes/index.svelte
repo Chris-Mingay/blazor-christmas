@@ -3,7 +3,26 @@
 </script>
 
 <script>
+	import {onMount} from "svelte";
 	import Counter from '$lib/Counter.svelte';
+	import {authenticated} from '../stores/auth';
+
+	let message = ''
+	onMount(async () => {
+		try {
+			const response = await fetch('https://localhost:5021/api/UserProfiles', {
+				headers: {'Content-Type': 'application/json'},
+				credentials: 'include',
+			});
+			const content = await response.json();
+			message = `Hi ${content.name}`;
+			authenticated.set(true);
+		} catch (e) {
+			message = 'You are not logged in';
+			authenticated.set(false);
+		}
+	});
+
 </script>
 
 <svelte:head>

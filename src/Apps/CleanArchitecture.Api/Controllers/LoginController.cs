@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.ApplicationUser.Commands.RegisterUser;
 using CleanArchitecture.Application.ApplicationUser.Queries.GetToken;
 using CleanArchitecture.Application.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Api.Controllers
@@ -35,5 +36,6 @@ namespace CleanArchitecture.Api.Controllers
         {
             return Ok(await Mediator.Send(query, cancellationToken));
         }
+        
     }
 }
