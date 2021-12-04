@@ -37,14 +37,14 @@ public class QuestionsController : BaseApiController
     }
 
     [HttpPost("{questionId}")]
-    public async Task<ActionResult> SubmitAnswer(Guid questionId, SubmitAnswerCommand command)
+    public async Task<ServiceResult<Guid>> SubmitAnswer(Guid questionId, SubmitAnswerCommand command)
     {
         if (questionId != command.QuestionId)
         {
-            return BadRequest();
+            return ServiceResult.Failed<Guid>(ServiceError.Validation);
         }
-        await Mediator.Send(command);
-        return NoContent();
+        return await Mediator.Send(command);
+        
     }
 
 }

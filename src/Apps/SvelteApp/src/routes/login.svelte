@@ -21,7 +21,7 @@
 	<title>Login - Christmas Quiz</title>
 </svelte:head>
 
-<div class='bg-blue-500 rounded-2xl overflow-hidden p-4 text-white w-3/4 lg:w-1/2 mx-auto shadow-xl'>
+<div class='bg-blue-500 rounded-2xl overflow-hidden p-4 text-white w-3/4 lg:w-96 mx-auto shadow-xl'>
 	<h1 class='font-bold text-4xl mb-4 text-blue-300'>Login</h1>
 	<form on:submit|preventDefault={handleLogin} class='flex flex-col'>
 		<input type='email' name='email' bind:value={email} placeholder='Email' class='rounded-lg p-2 mb-2'/>

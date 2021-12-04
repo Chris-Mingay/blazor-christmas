@@ -65,7 +65,7 @@ export async function post(fetch, url, body){
 	}
 }
 
-export async function get(fetch, url, params){
+export async function get(fetch, url, params = {}){
 	let customError = false;
 	try {
 		let headers = {}
@@ -74,13 +74,15 @@ export async function get(fetch, url, params){
 			headers['Authorization'] = `Bearer ${token}`;
 		}
 
-		const res = await fetch(`${url}?${URLSearchParams(params || {})}`, {
+		console.log(`${url}?${new URLSearchParams(params || {})}`);
+		const res = await fetch(`${url}?${new URLSearchParams(params || {})}`, {
 			method: 'GET',
 			headers
 		});
 		if(!res.ok){
 			try {
 				const data = await res.json();
+				console.log(data);
 				const error = data.message[0].messages[0];
 				customError = true;
 				throw {id: error.id, message: error.message}

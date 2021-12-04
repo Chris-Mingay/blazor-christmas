@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CleanArchitecture.Domain.Entities;
 
@@ -13,4 +14,5 @@ public class Question
     public Guid CorrectAnswerId { get; set; }
     
     public QuestionOption CorrectAnswer { get; set; }
+    public List<QuestionOption> QuestionOptions { get; set; }
 }

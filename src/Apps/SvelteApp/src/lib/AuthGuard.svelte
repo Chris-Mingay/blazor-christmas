@@ -4,7 +4,7 @@
 
 	let authenticated, ready;
 
-	isAuthenticated.subscribe(value => { console.log('AuthGuard', value); authenticated = value;});
+	isAuthenticated.subscribe(value => authenticated = value);
 
 	onMount(()=>{
 		ready = true;

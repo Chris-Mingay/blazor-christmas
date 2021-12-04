@@ -24,6 +24,7 @@ public class SubmitAnswerCommandValidator : AbstractValidator<SubmitAnswerComman
 
         RuleFor(v => v).Must(command =>
             {
+                if (!command.QuestionOptionId.HasValue) return true; // If the user didn't submit an answer in time
                 return _context.QuestionOptions.Any(x =>
                     x.QuestionId == command.QuestionId && x.Id == command.QuestionOptionId);
             })

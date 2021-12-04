@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.Infrastructure.Identity;
@@ -47,187 +48,45 @@ namespace CleanArchitecture.Infrastructure.Persistence
 
             if (!context.Questions.Any())
             {
-                var questions = new List<Question>
+
+                int day = DateTime.Now.Day;
+
+                var questions = new List<Question>();
+                for (int i = 0; i < 25; i++)
                 {
-                    new Question()
+                    questions.Add(new Question()
                     {
-                        DayNumber = 1,
+                        DayNumber = (i+1),
                         Category = "Sport",
                         Text = "Question Text?",
                         MoreInfo = "More Info",
-                    },
-                    new Question()
+                        Published = (i < day)
+                    });
+                }
+                
+                foreach (var question in questions)
+                {
+                    question.QuestionOptions = new List<QuestionOption>();
+                    for (int i = 0; i < 4; i++)
                     {
-                        DayNumber = 2,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 3,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 4,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 5,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 6,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 7,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 8,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 9,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 10,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 11,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 12,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 13,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 14,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 15,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 16,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 17,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 18,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 19,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 20,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 21,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 22,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 23,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 24,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
-                    },
-                    new Question()
-                    {
-                        DayNumber = 25,
-                        Category = "Sport",
-                        Text = "Question Text?",
-                        MoreInfo = "More Info",
+                        var o = new QuestionOption()
+                        {
+                            Text = $"Option {(i+1)}"
+                        };
+                        question.QuestionOptions.Add(o);
                     }
-                };
+                }
 
                 await context.Questions.AddRangeAsync(questions);
                 await context.SaveChangesAsync();
+                
+                foreach (var question in questions)
+                {
+                    question.CorrectAnswerId = question.QuestionOptions[0].Id;
+                }
+                
+                await context.SaveChangesAsync();
+                
             }
         }
     }

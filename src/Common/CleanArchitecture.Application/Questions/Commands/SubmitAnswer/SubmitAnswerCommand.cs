@@ -11,7 +11,7 @@ public class SubmitAnswerCommand : IRequestWrapper<Guid>
 {
     public Guid QuestionId { get; set; }
     public Guid AnswerId { get; set; }
-    public Guid QuestionOptionId { get; set; }
+    public Guid? QuestionOptionId { get; set; }
 }
 
 public class SubmitAnswerCommandHandler : IRequestHandlerWrapper<SubmitAnswerCommand, Guid>
@@ -37,6 +37,6 @@ public class SubmitAnswerCommandHandler : IRequestHandlerWrapper<SubmitAnswerCom
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return ServiceResult.Success(answer.Id);
+        return ServiceResult.Success(question.CorrectAnswerId);
     }
 }
