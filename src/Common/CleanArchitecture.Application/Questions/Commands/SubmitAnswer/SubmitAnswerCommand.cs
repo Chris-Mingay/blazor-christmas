@@ -34,6 +34,7 @@ public class SubmitAnswerCommandHandler : IRequestHandlerWrapper<SubmitAnswerCom
         answer.QuestionOptionId = request.QuestionOptionId;
         answer.Correct = answer.QuestionOptionId == question.CorrectAnswerId;
         answer.AnswerSubmittedAt = DateTime.Now;
+        answer.AnswerTime = Convert.ToDecimal((answer.AnswerSubmittedAt.Value - answer.QuestionRevealedAt.Value).TotalMilliseconds / 1000);
 
         await _context.SaveChangesAsync(cancellationToken);
 

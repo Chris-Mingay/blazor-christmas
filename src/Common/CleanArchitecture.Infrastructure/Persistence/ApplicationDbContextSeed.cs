@@ -21,20 +21,27 @@ namespace CleanArchitecture.Infrastructure.Persistence
             }
 
             var defaultUser = new ApplicationUser { UserName = "test@test.com", Email = "test@test.com" };
+            var anotherUser = new ApplicationUser { UserName = "another@test.com", Email = "another@test.com" };
 
             if (userManager.Users.All(u => u.UserName != defaultUser.UserName))
             {
                 await userManager.CreateAsync(defaultUser, "Password1!");
-                //await userManager.AddToRolesAsync(defaultUser, new[] { administratorRole.Name });
+            }
+            if (userManager.Users.All(u => u.UserName != anotherUser.UserName))
+            {
+                await userManager.CreateAsync(anotherUser, "Password1!");
             }
         }
 
         public static async Task SeedSampleDataAsync(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager)
         {
+            
+            var users = userManager.Users.ToList();
+            
             if (!context.UserProfiles.Any())
             {
-                var users = userManager.Users.ToList();
+                
                 foreach (var user in users)
                 {
                     await context.UserProfiles.AddAsync(new UserProfile()
@@ -46,9 +53,44 @@ namespace CleanArchitecture.Infrastructure.Persistence
                 }
             }
 
-            if (!context.Questions.Any())
+            if (!context.Leagues.Any())
             {
 
+                var userProfile = context.UserProfiles.FirstOrDefault();
+                var anotherUserProfile = context.UserProfiles.LastOrDefault();
+
+                var league = new League()
+                {
+                    Name = "Test League",
+                    InviteCode = "123456",
+                    UserProfileId = userProfile?.Id ?? Guid.Empty,
+                };
+
+                context.Leagues.Add(league);
+                await context.SaveChangesAsync();
+
+                var leagueMembership = new LeagueMembership()
+                {
+                    LeagueId = league.Id,
+                    UserProfileId = userProfile?.Id ?? Guid.Empty,
+                };
+                context.LeagueMemberships.Add(leagueMembership);
+
+                if (anotherUserProfile is not null)
+                {
+                    context.LeagueMemberships.Add(new LeagueMembership()
+                    {
+                        LeagueId = league.Id,
+                        UserProfileId = anotherUserProfile.Id
+                    });
+                }
+                
+                await context.SaveChangesAsync();
+                
+            }
+
+            if (!context.Questions.Any())
+            {
                 int day = DateTime.Now.Day;
 
                 var questions = new List<Question>();
@@ -56,14 +98,14 @@ namespace CleanArchitecture.Infrastructure.Persistence
                 {
                     questions.Add(new Question()
                     {
-                        DayNumber = (i+1),
+                        DayNumber = (i + 1),
                         Category = "Sport",
                         Text = "Question Text?",
                         MoreInfo = "More Info",
                         Published = (i < day)
                     });
                 }
-                
+
                 foreach (var question in questions)
                 {
                     question.QuestionOptions = new List<QuestionOption>();
@@ -71,7 +113,7 @@ namespace CleanArchitecture.Infrastructure.Persistence
                     {
                         var o = new QuestionOption()
                         {
-                            Text = $"Option {(i+1)}"
+                            Text = $"Option {(i + 1)}"
                         };
                         question.QuestionOptions.Add(o);
                     }
@@ -79,14 +121,13 @@ namespace CleanArchitecture.Infrastructure.Persistence
 
                 await context.Questions.AddRangeAsync(questions);
                 await context.SaveChangesAsync();
-                
+
                 foreach (var question in questions)
                 {
                     question.CorrectAnswerId = question.QuestionOptions[0].Id;
                 }
-                
+
                 await context.SaveChangesAsync();
-                
             }
         }
     }

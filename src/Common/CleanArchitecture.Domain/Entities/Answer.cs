@@ -11,6 +11,7 @@ public class Answer
     public DateTime? QuestionRevealedAt { get; set; }
     public DateTime? AnswerSubmittedAt { get; set; }
     public bool Correct { get; set; }
+    public decimal AnswerTime { get; set; }
     
     public virtual Question Question { get; set; }
     public virtual UserProfile UserProfile { get; set; }

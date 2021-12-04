@@ -85,22 +85,6 @@
 		}
 	}
 
-	function optionCorrect(option){
-		if(!correctAnswer) return false;
-		if(option.id === correctAnswer.id) return true;
-		return false;
-	}
-
-	function optionIncorrect(option){
-		if(!correctAnswer) return false;
-		if(option === selectedOption && option.id !== correctAnswer.id) return true;
-		return false;
-	}
-
-	function optionNeutral(option){
-		return (!optionCorrect(option) && !optionIncorrect(option));
-	}
-
 	const nth = function(d) {
 		if (d > 3 && d < 21) return 'th';
 		switch (d % 10) {

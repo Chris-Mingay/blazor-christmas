@@ -16,9 +16,9 @@ namespace CleanArchitecture.Api.Controllers;
 public class LeaguesController : BaseApiController
 {
     [HttpGet]
-    public async Task<ServiceResult<List<LeagueDto>>> Get()
+    public async Task<ServiceResult<List<LeagueMembershipDto>>> Get()
     {
-        return await Mediator.Send(new GetLeaguesQuery());
+        return await Mediator.Send(new GetUserLeaguesQuery());
     }
 
     [HttpGet("{id}")]

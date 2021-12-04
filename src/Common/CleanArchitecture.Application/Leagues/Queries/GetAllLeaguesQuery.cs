@@ -12,23 +12,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Leagues.Queries;
 
-public class GetLeaguesQuery : IRequestWrapper<List<LeagueDto>>
+public class GetAllLeaguesQuery : IRequestWrapper<List<LeagueDto>>
 {
     
 }
 
-public class GetLeaguesQueryHandler : IRequestHandlerWrapper<GetLeaguesQuery, List<LeagueDto>>
+public class GetAllLeaguesQueryHandler : IRequestHandlerWrapper<GetAllLeaguesQuery, List<LeagueDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetLeaguesQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetAllLeaguesQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public async Task<ServiceResult<List<LeagueDto>>> Handle(GetLeaguesQuery request, CancellationToken cancellationToken)
+    public async Task<ServiceResult<List<LeagueDto>>> Handle(GetAllLeaguesQuery request, CancellationToken cancellationToken)
     {
         return ServiceResult.Success(await _context.Leagues
             .ProjectTo<LeagueDto>(_mapper.ConfigurationProvider)

@@ -35,6 +35,9 @@ public class GetLeagueQueryHandler : IRequestHandlerWrapper<GetLeagueQuery, Leag
             .ProjectTo<LeagueDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
 
+        league.LeagueMemberships =
+            league.LeagueMemberships.OrderByDescending(x => x.Points).ThenBy(x => x.TotalAnswerTime).ToList();
+
         return league is not null ? ServiceResult.Success(league) : ServiceResult.Failed<LeagueDto>(ServiceError.NotFound);
 
     }

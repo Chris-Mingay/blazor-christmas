@@ -12,9 +12,9 @@
 
 	let questions;
 
-	onMount(getCalendar);
+	onMount(getQuestions);
 
-	async function getCalendar(){
+	async function getQuestions(){
 		try {
 			const json = await get(fetch, 'https://localhost:5021/api/Questions');
 			console.log(json);
@@ -28,6 +28,8 @@
 	}
 
 	function questionClass(question){
+		if(question.correct) return 'correct';
+		if(question.incorrect) return 'incorrect';
 		if(question.published) return 'ready';
 		return '';
 	}

@@ -26,18 +26,22 @@
 
 <div class='flex flex-col min-h-screen'>
 	<div class='flex-0 p-1 border-b border-gray-400'>
-		<nav>
-			<a href='/'>Home</a>
-			{#if authenticated}
-				<a href='/profile'>Profile</a>
-				<button on:click={logout} class='py-0'>Logout</button>
-			{:else}
-				<a href='/login'>Login</a>
-				<a href='/register'>Register</a>
+		<nav class='flex'>
+			<div class='flex-1'>
+				<a href='/'>Home</a>
+				{#if authenticated}
+					<a href='/profile'>Profile</a>
+					<a href='/leagues'>Leagues</a>
+					<button on:click={logout} class='py-0'>Logout</button>
+				{:else}
+					<a href='/login'>Login</a>
+					<a href='/register'>Register</a>
 
-			{/if}
-			<a href='/locked'>Locked</a>
-
+				{/if}
+			</div>
+			<div class='flex-0'>
+				<a href='/about' class='pull-right'>About</a>
+			</div>
 		</nav>
 	</div>
 	<div class='flex-1 flex flex-col items-center justify-center bg-blue-100'>

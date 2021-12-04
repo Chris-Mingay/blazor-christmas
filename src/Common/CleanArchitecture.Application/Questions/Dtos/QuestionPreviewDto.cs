@@ -10,4 +10,6 @@ public class QuestionPreviewDto : IMapFrom<Question>
     public int DayNumber { get; set; }
     public string Category { get; set; }
     public bool Published { get; set; }
+    public bool Correct { get; set; }
+    public bool Incorrect { get; set; }
 }

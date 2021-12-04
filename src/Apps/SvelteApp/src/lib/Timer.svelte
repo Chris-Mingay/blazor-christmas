@@ -1,9 +1,9 @@
 <script>
     import { createEventDispatcher } from 'svelte';
 
-    export let duration = 5;
+    export let duration = 10;
     let timeRemaining = duration;
-    export let height = '4';
+    export let height = '2';
 
     var timer;
     var updateInterval;

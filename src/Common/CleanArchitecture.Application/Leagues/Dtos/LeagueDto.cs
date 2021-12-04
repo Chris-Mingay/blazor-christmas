@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using CleanArchitecture.Application.Common.Mappings;
 using CleanArchitecture.Domain.Entities;
@@ -9,12 +11,7 @@ public class LeagueDto : IMapFrom<League>
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public int NumberOfMembers { get; set; }
-    
-    public void Mapping(Profile profile)
-    {
-        profile.CreateMap<League, LeagueDto>()
-            .ForMember(d => d.NumberOfMembers, opt => opt.MapFrom(s => s.LeagueMemberships.Count));
-    }
-    
+    public List<LeagueMembershipDto> LeagueMemberships { get; set; }
+    public int NumberOfMembers => LeagueMemberships?.Count ?? 0;
+
 }
