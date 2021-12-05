@@ -21,15 +21,18 @@ public class GetLeagueQueryHandler : IRequestHandlerWrapper<GetLeagueQuery, Leag
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly ICurrentUserService _currentUserService;
 
-    public GetLeagueQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetLeagueQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService)
     {
         _context = context;
         _mapper = mapper;
+        _currentUserService = currentUserService;
     }
 
     public async Task<ServiceResult<LeagueDto>> Handle(GetLeagueQuery request, CancellationToken cancellationToken)
     {
+
         var league = await _context.Leagues
             .Where(x => x.Id == request.LeagueId)
             .ProjectTo<LeagueDto>(_mapper.ConfigurationProvider)

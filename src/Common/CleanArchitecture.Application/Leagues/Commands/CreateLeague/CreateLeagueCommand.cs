@@ -32,7 +32,8 @@ public class CreateLeagueCommandHandler : IRequestHandlerWrapper<CreateLeagueCom
         var league = new League() { Name = request.Name, UserProfileId = userProfile.Id };
         _context.Leagues.Add(league);
         await _context.SaveChangesAsync(cancellationToken);
-        league.LeagueMemberships.Add(new LeagueMembership()
+        
+        _context.LeagueMemberships.Add(new LeagueMembership()
         {
             LeagueId = league.Id,
             UserProfileId = userProfile.Id

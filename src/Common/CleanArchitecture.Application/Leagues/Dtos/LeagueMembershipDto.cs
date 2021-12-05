@@ -12,6 +12,7 @@ public class LeagueMembershipDto : IMapFrom<LeagueMembership>
     public Guid LeagueId { get; set; }
     public string Name { get; set; }
     public int Points { get; set; }
+    public int Rank { get; set; }
     public decimal TotalAnswerTime { get; set; }
     public string LeagueName { get; set; }
     public int NumberOfMembers { get; set; }

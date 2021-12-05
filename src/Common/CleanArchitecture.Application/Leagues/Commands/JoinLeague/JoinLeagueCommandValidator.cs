@@ -13,13 +13,5 @@ public class JoinLeagueCommandValidator : AbstractValidator<JoinLeagueCommand>
                 return league is not null;
             })
             .WithMessage("League must exist");
-        
-        RuleFor(v => v).Must(command =>
-            {
-                var league = _context.Leagues.Find(command.LeagueId);
-                return league != null && league.InviteCode == command.InviteCode;
-            })
-            .WithMessage("Incorrect invite code");
-        
     }
 }

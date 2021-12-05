@@ -40,5 +40,8 @@ public class GetUserLeaguesQueryHandler : IRequestHandlerWrapper<GetUserLeaguesQ
             .ProjectTo<LeagueMembershipDto>(_mapper.ConfigurationProvider)
             .OrderBy(x => x.LeagueName)
             .ToListAsync(cancellationToken));
+        
+        
+        
     }
 }

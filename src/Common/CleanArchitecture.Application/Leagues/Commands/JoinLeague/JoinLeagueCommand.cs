@@ -12,7 +12,6 @@ namespace CleanArchitecture.Application.Leagues.Commands.JoinLeague;
 public class JoinLeagueCommand : IRequestWrapper<Guid>
 {
     public Guid LeagueId { get; set; }
-    public string InviteCode { get; set; }
 }
 
 public class JoinLeagueCommandHandler : IRequestHandlerWrapper<JoinLeagueCommand, Guid>

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Leagues.Commands.CreateLeague;
 using CleanArchitecture.Application.Leagues.Commands.DeleteLeague;
+using CleanArchitecture.Application.Leagues.Commands.JoinLeague;
+using CleanArchitecture.Application.Leagues.Commands.LeaveLeague;
 using CleanArchitecture.Application.Leagues.Commands.UpdateLeague;
 using CleanArchitecture.Application.Leagues.Dtos;
 using CleanArchitecture.Application.Leagues.Queries;
@@ -52,5 +54,17 @@ public class LeaguesController : BaseApiController
         await Mediator.Send(new DeleteLeagueCommand() { LeagueId = id });
 
         return NoContent();
+    }
+    
+    [HttpPost("join")]
+    public async Task<ServiceResult<Guid>> Join(JoinLeagueCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+    
+    [HttpPost("leave")]
+    public async Task<ServiceResult<bool>> Leave(LeaveLeagueCommand command)
+    {
+        return await Mediator.Send(command);
     }
 }

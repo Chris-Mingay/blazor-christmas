@@ -62,7 +62,6 @@ namespace CleanArchitecture.Infrastructure.Persistence
                 var league = new League()
                 {
                     Name = "Test League",
-                    InviteCode = "123456",
                     UserProfileId = userProfile?.Id ?? Guid.Empty,
                 };
 
