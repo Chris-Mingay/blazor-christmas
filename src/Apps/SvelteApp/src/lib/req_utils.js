@@ -65,6 +65,51 @@ export async function post(fetch, url, body){
 	}
 }
 
+export async function put(fetch, url, body){
+	let customError = false;
+	try {
+		let headers = {}
+		if(!(body instanceof FormData)){
+			headers['Content-Type'] = 'application/json';
+			body = JSON.stringify(body);
+		}
+		const token = browserGet('jwt');
+		if(token){
+			headers['Authorization'] = `Bearer ${token}`;
+		}
+
+		const res = await fetch(url, {
+			method: 'PUT',
+			body,
+			headers
+		});
+		if(!res.ok){
+			try {
+				const data = await res.json();
+				const error = data.message[0].messages[0];
+				customError = true;
+				throw {id: error.id, message: error.message}
+			} catch (err) {
+				console.log(err);
+				throw err;
+			}
+		}
+
+		try {
+			const json = await res.json();
+			return json;
+		} catch (err){
+			console.log(err);
+			throw {id:'',message: 'An unknown error has occurred'};
+		}
+
+	} catch (err){
+		console.log(err);
+		throw customError ? err : {id: '', message: 'An unknown error has occured'}
+	}
+}
+
+
 export async function get(fetch, url, params = {}){
 	let customError = false;
 	try {

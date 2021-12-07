@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.UserProfiles.Commands.UpdateName;
 using CleanArchitecture.Application.UserProfiles.Dtos;
 using CleanArchitecture.Application.UserProfiles.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +27,11 @@ public class UserProfilesController : BaseApiController
         {
             UserId = userId
         });
-}
-
+    }
+    
+    [HttpPut]
+    public async Task<ServiceResult<bool>> UpdateName(UpdateNameCommand command)
+    {
+        return await Mediator.Send(command);
+    }
 }
