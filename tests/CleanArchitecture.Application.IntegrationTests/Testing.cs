@@ -15,6 +15,7 @@ using Moq;
 using NUnit.Framework;
 using Respawn;
 using CleanArchitecture.Api;
+using Npgsql;
 
 namespace CleanArchitecture.Application.IntegrationTests
 {
@@ -145,7 +146,11 @@ namespace CleanArchitecture.Application.IntegrationTests
 
         public static async Task ResetState()
         {
-            await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection_Postgres"));
+            using (var conn = new NpgsqlConnection("DefaultConnection_Postgres"))
+            {
+                await conn.OpenAsync();
+                await _checkpoint.Reset(conn);
+            }
             _currentUserId = null;
         }
 

@@ -65,6 +65,6 @@ jobs:
       - name: run tests
         run: dotnet test CleanArchitecture.sln --configuration Release
         env:
-          UseInMemoryDatabase: true
+          UseInMemoryDatabase: false
           ConnectionStrings.DefaultConnection_Postgres: User ID=CleanArchitectureDB;Password=Password1!;Server=localhost;Port=5432;Database=CleanArchitectureDB;Integrated Security=true;Pooling=true;
     
