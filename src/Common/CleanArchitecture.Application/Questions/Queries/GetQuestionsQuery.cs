@@ -7,6 +7,7 @@ using AutoMapper.QueryableExtensions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Questions.Dtos;
+using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,8 +41,10 @@ public class GetQuestionsQueryHandler : IRequestHandlerWrapper<GetQuestionsQuery
             .OrderBy(x => x.DayNumber)
             .ToListAsync(cancellationToken);
 
-        var answers = await _context.Answers.Where(x => x.UserProfileId == userProfile.Id)
-            .ToListAsync(cancellationToken);
+        var answers = userProfile is not null
+            ? await _context.Answers.Where(x => x.UserProfileId == userProfile.Id)
+                .ToListAsync(cancellationToken)
+            : new List<Answer>();
 
         foreach (var question in questions)
         {
