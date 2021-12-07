@@ -33,13 +33,26 @@ public class GetUserLeaguesQueryHandler : IRequestHandlerWrapper<GetUserLeaguesQ
     public async Task<ServiceResult<List<LeagueMembershipDto>>> Handle(GetUserLeaguesQuery request, CancellationToken cancellationToken)
     {
         
-        var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(x=>x.UserId == _currentUserService.UserId, cancellationToken); 
-        
-        return ServiceResult.Success(await _context.LeagueMemberships
-            .Where(x=>x.UserProfileId == userProfile.Id )
+        var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(x=>x.UserId == _currentUserService.UserId, cancellationToken);
+
+        var leagueMemberships = await _context.LeagueMemberships
+            .Where(x => x.UserProfileId == userProfile.Id)
             .ProjectTo<LeagueMembershipDto>(_mapper.ConfigurationProvider)
             .OrderBy(x => x.LeagueName)
-            .ToListAsync(cancellationToken));
+            .ToListAsync(cancellationToken);
+
+        foreach (var membership in leagueMemberships)
+        {
+            int rank = _context.LeagueMemberships.Where(x => x.LeagueId == membership.LeagueId)
+                .OrderByDescending(x => x.UserProfile.Answers.Count(x => x.Correct))
+                .ThenBy(x => x.UserProfile.Answers.Sum(y => y.AnswerTime))
+                .AsEnumerable()
+                .Select((entry, index) => new { UserProfileId = entry.UserProfileId, Rank = index + 1 })
+                .FirstOrDefault(x=>x.UserProfileId == userProfile.Id).Rank;
+            membership.Rank = rank;
+        }
+        
+        return ServiceResult.Success(leagueMemberships);
         
         
         
