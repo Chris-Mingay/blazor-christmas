@@ -146,11 +146,13 @@ namespace CleanArchitecture.Application.IntegrationTests
 
         public static async Task ResetState()
         {
-            using (var conn = new NpgsqlConnection("DefaultConnection_Postgres"))
+            
+            using (var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection_Postgres")))
             {
                 await conn.OpenAsync();
                 await _checkpoint.Reset(conn);
             }
+            
             _currentUserId = null;
         }
 
