@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using CleanArchitecture.Application.ApplicationUser.Dtos;
 using CleanArchitecture.Application.ApplicationUser.Queries.GetToken;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;

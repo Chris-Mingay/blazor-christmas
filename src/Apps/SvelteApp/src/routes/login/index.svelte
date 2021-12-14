@@ -2,7 +2,8 @@
 
 	import {goto} from '$app/navigation';
 	import {post, browserSet } from '$lib/req_utils.js';
-	import { isAuthenticated } from '../stores/authentication';
+	import { isAuthenticated } from '../../stores/authentication';
+	import { GoogleAuth } from '@beyonk/svelte-social-auth';
 
 	let email = '', password = '';
 
@@ -13,8 +14,27 @@
 			isAuthenticated.update(n => true);
 			goto('/');
 		}
-
 	}
+
+	async function googleAuthSuccess(e){
+		const provider = "Google";
+		const idToken = e?.detail?.user?.wc?.id_token;
+		const json = await post(fetch, 'https://localhost:5021/api/login/external', { provider, idToken })
+		if(json?.data?.token){
+			browserSet('jwt',json.data.token);
+			isAuthenticated.update(n => true);
+			goto('/');
+		}
+	}
+
+	function googleAuthError(e){
+		console.dir(e);
+	}
+
+	function googleInitError(e){
+		console.dir(e);
+	}
+
 </script>
 
 <svelte:head>
@@ -30,4 +50,9 @@
 			<button type='submit' class='text-blue-500 bg-white px-4 py-2 text-lg font-semibold rounded-lg'>Sign In</button>
 		</div>
 	</form>
+
+	<div class='border-t border-white my-4'></div>
+
+	<GoogleAuth clientId="427721046495-vljbnrfkjmnln8t1vn9uq1dhc87oo323.apps.googleusercontent.com" on:auth-success={googleAuthSuccess} on:init-error={googleInitError} on:auth-error={googleAuthError} />
+
 </div>

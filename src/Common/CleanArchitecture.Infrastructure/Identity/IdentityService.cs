@@ -69,7 +69,38 @@ namespace CleanArchitecture.Infrastructure.Identity
 
             return null;
         }
+        
+        public async Task<ApplicationUserDto> GetUserFromEmail(string userEmail)
+        {
+            ApplicationUser user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
 
+            if (user != null)
+            {
+                ApplicationUserDto applicationUserDto = new()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email
+                };
+                return applicationUserDto;
+            }
+
+            return null;
+        }
+
+        public async Task<(Result Result, string UserId)> CreateUserAsync(string userName)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = userName,
+                Email = userName,
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            return (result.ToApplicationResult(), user.Id);
+        }
+        
         public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
         {
             var user = new ApplicationUser

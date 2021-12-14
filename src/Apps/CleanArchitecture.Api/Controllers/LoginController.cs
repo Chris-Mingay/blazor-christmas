@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ApplicationUser.Commands.RegisterUser;
+using CleanArchitecture.Application.ApplicationUser.Dtos;
+using CleanArchitecture.Application.ApplicationUser.Queries.GetExternalToken;
 using CleanArchitecture.Application.ApplicationUser.Queries.GetToken;
 using CleanArchitecture.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +35,12 @@ namespace CleanArchitecture.Api.Controllers
         /// <returns>LoginResponse</returns>
         [HttpPost("register")]
         public async Task<ActionResult<ServiceResult<LoginResponse>>> Login(RegisterUserCommand query, CancellationToken cancellationToken)
+        {
+            return Ok(await Mediator.Send(query, cancellationToken));
+        }
+        
+        [HttpPost("external")]
+        public async Task<ActionResult<ServiceResult<LoginResponse>>> Login(GetExternalTokenQuery query, CancellationToken cancellationToken)
         {
             return Ok(await Mediator.Send(query, cancellationToken));
         }

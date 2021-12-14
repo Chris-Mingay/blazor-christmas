@@ -24,6 +24,10 @@
 
 </script>
 
+<svelte:head>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+</svelte:head>
+
 <div class='flex flex-col min-h-screen'>
 	<div class='flex-0 p-1 border-b border-gray-400'>
 		<nav class='flex'>

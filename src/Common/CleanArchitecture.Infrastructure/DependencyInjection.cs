@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using CleanArchitecture.Application.Common.Configuration;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Files;
 using CleanArchitecture.Infrastructure.Identity;
@@ -20,6 +21,11 @@ namespace CleanArchitecture.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)//, IWebHostEnvironment environment)
         {
+            
+            var authenticationGoogleOptions = configuration.GetSection("Authentication:Google").Get<AuthenticationGoogleOptions>();
+            services.AddSingleton(authenticationGoogleOptions ?? new AuthenticationGoogleOptions());
+            
+            
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
@@ -66,6 +72,12 @@ namespace CleanArchitecture.Infrastructure
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddGoogle(options =>
+                {
+
+                    options.ClientId = authenticationGoogleOptions.ClientId;
+                    options.ClientSecret = authenticationGoogleOptions.ClientSecret;
                 })
                 .AddJwtBearer(options =>
                 {

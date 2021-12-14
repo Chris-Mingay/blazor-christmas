@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Dto;
 
-namespace CleanArchitecture.Application.ApplicationUser.Queries.GetToken
+namespace CleanArchitecture.Application.ApplicationUser.Dtos
 {
     public class LoginResponse
     {
